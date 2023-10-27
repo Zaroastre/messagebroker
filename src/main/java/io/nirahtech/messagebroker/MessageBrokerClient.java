@@ -1,8 +1,8 @@
-package com.adelya.broker;
+package io.nirahtech.messagebroker;
 
 import java.io.IOException;
 
-import com.adelya.broker.configuration.Configuration;
+import io.nirahtech.messagebroker.configuration.Configuration;
 
 public final class MessageBrokerClient implements MessageBroker {
 

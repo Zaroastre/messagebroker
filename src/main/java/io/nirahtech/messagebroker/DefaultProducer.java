@@ -1,6 +1,6 @@
-package com.adelya.broker;
+package io.nirahtech.messagebroker;
 
-import com.adelya.broker.configuration.Configuration;
+import io.nirahtech.messagebroker.configuration.Configuration;
 
 final class DefaultProducer implements Producer {
 

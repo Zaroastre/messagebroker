@@ -1,4 +1,4 @@
-package com.adelya.broker.configuration;
+package io.nirahtech.messagebroker.configuration;
 
 import java.time.Duration;
 

@@ -1,8 +1,8 @@
-package com.adelya.broker.configuration;
+package io.nirahtech.messagebroker.configuration;
 
 import java.time.Duration;
 
-import com.adelya.broker.Builder;
+import io.nirahtech.messagebroker.Builder;
 
 public final class ConfigurationBuilder implements Builder<Configuration> {
 

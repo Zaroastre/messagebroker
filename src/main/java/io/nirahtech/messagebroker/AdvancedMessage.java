@@ -1,8 +1,8 @@
-package com.adelya.broker;
+package io.nirahtech.messagebroker;
 
 import java.time.LocalDateTime;
 
-import com.adelya.broker.configuration.Configuration;
+import io.nirahtech.messagebroker.configuration.Configuration;
 
 final record AdvancedMessage (
     Configuration configuration,

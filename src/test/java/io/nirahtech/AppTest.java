@@ -1,30 +1,30 @@
-package com.adelya;
+package io.nirahtech;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
 import java.time.Duration;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import com.adelya.broker.MessageBroker;
-import com.adelya.broker.MessageBrokerClient;
-import com.adelya.broker.QueueType;
-import com.adelya.broker.configuration.Configuration;
+import io.nirahtech.messagebroker.MessageBroker;
+import io.nirahtech.messagebroker.MessageBrokerClient;
+import io.nirahtech.messagebroker.QueueType;
+import io.nirahtech.messagebroker.configuration.Configuration;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest {
+class AppTest {
     /**
      * Rigorous Test :-)
      * @throws InterruptedException
      */
     @Test
-    public void shouldAnswerWithTrue() throws IOException, InterruptedException {
+    void shouldAnswerWithTrue() throws IOException, InterruptedException {
         AtomicBoolean atomicBoolean = new AtomicBoolean(false);
         final Configuration configuration = Configuration.builder().maxQueueSize(100).messageTTL(Duration.ofMinutes(1))
                 .build();

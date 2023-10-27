@@ -1,27 +1,26 @@
-package com.adelya.broker;
+package io.nirahtech.messagebroker;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import com.adelya.broker.configuration.Configuration;
+import io.nirahtech.messagebroker.configuration.Configuration;
 
-final class Topic implements MessageQueue {
+final class Channel implements MessageQueue {
     private final Configuration configuration;
     private final String name;
     private final List<AdvancedMessage> messages = new ArrayList<>();
-    private final Set<Subscriber> subscribers = new HashSet<>();
+    private Subscriber subscriber = null;
     private final ExecutorService executorService = Executors.newSingleThreadExecutor();
     private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
 
-    Topic(final Configuration configuration, final String name) {
+    Channel(final Configuration configuration, final String name) {
         this.configuration = configuration;
         this.name = name;
     }
@@ -46,12 +45,8 @@ final class Topic implements MessageQueue {
             synchronized (this.messages) {
                 this.messages.add(advancedMessage);
                 executorService.submit(() -> {
-
-                    this.subscribers.forEach(subscriber -> {
-                        subscriber.handle(new Event(now, this.name, message));
-                    });
-                    if (this.messages.size() == this.configuration.maxQueueSize()) {
-                        this.messages.remove(0);
+                    if (Objects.nonNull(this.subscriber)) {
+                        this.subscriber.handle(new Event(now, this.name, message));
                     }
                 });
             }
@@ -60,7 +55,7 @@ final class Topic implements MessageQueue {
 
     @Override
     public void subscribe(final Subscriber subscriber) {
-        this.subscribers.add(subscriber);
+        this.subscriber = subscriber;
         executorService.submit(() -> {
             synchronized (this.messages) {
                 this.messages.forEach(advancedMessage -> {
@@ -69,6 +64,12 @@ final class Topic implements MessageQueue {
                 });
             }
         });
+    }
+
+    void unsubscribe(final Subscriber subscriber) {
+        if (this.subscriber == subscriber) {
+            this.subscriber = null;
+        }
     }
 
     @Override

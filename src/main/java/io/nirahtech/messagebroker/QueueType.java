@@ -1,4 +1,4 @@
-package com.adelya.broker;
+package io.nirahtech.messagebroker;
 
 public enum QueueType {
     CHANNEL,

@@ -1,4 +1,4 @@
-package com.adelya.broker;
+package io.nirahtech.messagebroker;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Consumer;
 
-import com.adelya.broker.configuration.Configuration;
+import io.nirahtech.messagebroker.configuration.Configuration;
 
 final class Server implements Closeable {
     private final Set<MessageQueue> messageQueues = new HashSet<>();

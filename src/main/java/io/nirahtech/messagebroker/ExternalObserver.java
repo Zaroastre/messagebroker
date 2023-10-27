@@ -1,4 +1,4 @@
-package com.adelya.broker;
+package io.nirahtech.messagebroker;
 
 import java.util.function.Consumer;
 
