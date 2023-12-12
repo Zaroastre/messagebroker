@@ -32,7 +32,7 @@ final class Channel implements MessageQueue {
 
     @Override
     public void publish(Message<?> message) {
-        if (this.messages.size() >= this.configuration.maxQueueSize()) {
+        if (this.messages.size() >= this.configuration.getMaxQueueSize()) {
             // Ignore
         } else {
             final LocalDateTime now = LocalDateTime.now();
@@ -41,7 +41,7 @@ final class Channel implements MessageQueue {
                 if (this.messages.contains(advancedMessage)) {
                     this.messages.remove(advancedMessage);
                 }
-            }, this.configuration.messageTTL().toMillis(), TimeUnit.MILLISECONDS);
+            }, this.configuration.getMessageTTL().toMillis(), TimeUnit.MILLISECONDS);
             synchronized (this.messages) {
                 this.messages.add(advancedMessage);
                 executorService.submit(() -> {
@@ -60,7 +60,7 @@ final class Channel implements MessageQueue {
             synchronized (this.messages) {
                 this.messages.forEach(advancedMessage -> {
                     final LocalDateTime now = LocalDateTime.now();
-                    subscriber.handle(new Event(now, this.name, advancedMessage.message()));
+                    subscriber.handle(new Event(now, this.name, advancedMessage.getMessage()));
                 });
             }
         });
@@ -75,8 +75,8 @@ final class Channel implements MessageQueue {
     @Override
     public void close() throws IOException {
         this.executorService.shutdown();
-        this.executorService.close();
+        // this.executorService.close();
         this.scheduledExecutorService.shutdownNow();
-        this.scheduledExecutorService.close();
+        // this.scheduledExecutorService.close();
     }
 }

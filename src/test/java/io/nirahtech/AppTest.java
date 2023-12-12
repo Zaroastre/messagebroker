@@ -34,9 +34,9 @@ class AppTest {
         final String payload = "Hello World!";
         messageBroker.producer().publish(queueType, topic1, payload);
         messageBroker.subscriber().subscribe(queueType, topic1, event -> {
-            assertNotNull(event.data());
-            assertNotNull(event.data().payload());
-            assertTrue(payload.equals(event.data().payload()));
+            assertNotNull(event.getData());
+            assertNotNull(event.getData().getPayload());
+            assertTrue(payload.equals(event.getData().getPayload()));
             atomicBoolean.set(true);
         });
         Thread.sleep(100);

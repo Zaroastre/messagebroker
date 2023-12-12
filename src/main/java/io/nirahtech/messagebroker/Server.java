@@ -20,9 +20,10 @@ final class Server implements Closeable {
     final void publishMessage(final QueueType queueType, final String subject, final Message<?> message) {
         Optional<MessageQueue> existingQueue = this.messageQueues.stream()
                 .filter(queue -> queue.getName().equalsIgnoreCase(subject)).findFirst();
-        existingQueue.ifPresentOrElse((queue) -> {
+        if (existingQueue.isPresent()) {
+            MessageQueue queue = existingQueue.get();
             queue.publish(message);
-        }, () -> {
+        } else {
             MessageQueue newTopic;
             switch (queueType) {
                 case CHANNEL:
@@ -36,15 +37,17 @@ final class Server implements Closeable {
             }
             this.messageQueues.add(newTopic);
             newTopic.publish(message);
-        });
+
+        }
     }
 
     final void subscribe(final QueueType queueType, final String subject, final Consumer<Event<Message<?>>> consumer) {
         Optional<MessageQueue> existingTopic = this.messageQueues.stream()
                 .filter(queue -> queue.getName().equalsIgnoreCase(subject)).findFirst();
-        existingTopic.ifPresentOrElse((queue) -> {
+        if (existingTopic.isPresent()) {
+            MessageQueue queue = existingTopic.get();
             queue.subscribe(new DefaultSubscriber(this, consumer));
-        }, () -> {
+        } else {
             MessageQueue newTopic;
             switch (queueType) {
                 case CHANNEL:
@@ -56,10 +59,11 @@ final class Server implements Closeable {
                 default:
                     throw new RuntimeException("Unsopported QueueType: " + queueType);
             }
-
+    
             this.messageQueues.add(newTopic);
             newTopic.subscribe(new DefaultSubscriber(this, consumer));
-        });
+
+        }
     }
 
     @Override

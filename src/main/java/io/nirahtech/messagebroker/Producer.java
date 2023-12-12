@@ -1,5 +1,5 @@
 package io.nirahtech.messagebroker;
 
-public sealed interface Producer permits DefaultProducer, ExternalProducer {
+public interface Producer {
     <T> void publish(QueueType queueType, String topic, T message);
 }
